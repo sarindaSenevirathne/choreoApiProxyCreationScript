@@ -1,0 +1,1 @@
+<apiName> , <apiVersion> , <apiContext> , <apiDescription> , <productionEndpoint> , <sandboxEndpoint (add prod endpoint if sandbox is empty)> , <specFile name with extention (swagger.yaml)>
