@@ -132,7 +132,7 @@ function importOpenAPISpecification(string apiName, string apiVersion, string ap
             string apiID = check response.id;
             return apiID;
         } else {
-            return error(string `Status code is not 201. Status code is ${returnResponse.statusCode}`);
+            return error(string `Error occurred while importing the API ${apiName} ${apiVersion}.Reason ${returnResponse.statusCode}`);
         }
 
     } on fail error e {
@@ -179,9 +179,14 @@ function createComponent(string apiID, string apiName, string apiVersion) return
             }}`;
 
         json response = check graphqlEp->execute(doc);
-        io:println(response);
 
-        return string `API(${apiName} ${apiVersion}) Creation successful. Respective API ID = ${apiID}`;
+        if(response.data.createComponent is json) {
+            //string componentID = check response.createComponent.id;
+            return string `API(${apiName} ${apiVersion}) Creation successful. Respective API ID = ${apiID}}`;
+        } else {
+            return string `API(${apiName} ${apiVersion}) Creation failed. Reason = ${response.toString()}`;
+        }
+
 
     } on fail error e {
         return string `API(${apiName} ${apiVersion}) Creation failed. Reason = ${e.toString()}`;
