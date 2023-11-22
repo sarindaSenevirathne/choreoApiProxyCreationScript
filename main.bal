@@ -1,6 +1,7 @@
 import ballerina/graphql;
 import ballerina/http;
 import ballerina/io;
+import ballerina/lang.runtime;
 import ballerina/mime;
 
 configurable string projectID = ?;
@@ -28,12 +29,14 @@ public function main() returns error? {
             string apiSpecFileName = apiInfo[6].trim();
 
             string|error apiID = importOpenAPISpecification(apiName, apiVersion, apiContext, apiDescription, apiProductionEndpoint, apiSandboxEndpoint, apiSpecFileName);
+            runtime:sleep(5.0);
 
             if apiID is error {
                 io:println(apiID);
             } else {
-               string response = createComponent(apiID, apiName, apiVersion);
-               io:println(response);
+                string response = createComponent(apiID, apiName, apiVersion);
+                io:println(response);
+                runtime:sleep(10.0);
             }
 
         });
@@ -41,6 +44,7 @@ public function main() returns error? {
     } on fail error e {
 
         io:println("Error occurred while processing: ", e);
+        runtime:sleep(5.0);
 
     }
 
@@ -180,13 +184,12 @@ function createComponent(string apiID, string apiName, string apiVersion) return
 
         json response = check graphqlEp->execute(doc);
 
-        if(response.data.createComponent is json) {
-            //string componentID = check response.createComponent.id;
+        if (response.data.createComponent is json) {
+
             return string `API(${apiName} ${apiVersion}) Creation successful. Respective API ID = ${apiID}}`;
         } else {
             return string `API(${apiName} ${apiVersion}) Creation failed. Reason = ${response.toString()}`;
         }
-
 
     } on fail error e {
         return string `API(${apiName} ${apiVersion}) Creation failed. Reason = ${e.toString()}`;

@@ -1,1 +1,1 @@
-<apiName> , <apiVersion> , <apiContext> , <apiDescription> , <productionEndpoint> , <sandboxEndpoint (add prod endpoint if sandbox is empty)> , <specFile name with extention (swagger.yaml)>
+petStore-viaScript123, v3.0, petViaScript123, , https://petstore.swagger.io/v2, https://petstore.swagger.io/v2, petStore.yaml
